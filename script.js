@@ -112,7 +112,7 @@ function showColorCombinations() {
         comboElement.className = 'combination';
         comboElement.style.backgroundColor = combo.backgroundColor;
         comboElement.style.color = combo.textColor;
-        comboElement.innerHTML = `Background: ${combo.backgroundColor} <br> Text: ${combo.textColor} <br> Contrast Ratio: ${combo.contrast}`;
+        comboElement.innerHTML = `Background: ${combo.backgroundColor} <br> Text: ${combo.textColor} <br> Contrast Ratio: ${combo.contrast}%`;
         combinationsContainer.appendChild(comboElement);
     });
 }
