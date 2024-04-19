@@ -15,7 +15,6 @@ function generateColorInputs(count) {
         input.value = randomColor(); // Set a random color
         colorInputs.appendChild(input);
     }
-    document.getElementById('showCombinations').style.display = 'block';
 }
 
 function randomColor() {
@@ -38,6 +37,7 @@ function addColorInput() {
         input.type = 'color';
         input.id = 'color' + existingInputs.length;
         input.value = randomColor();
+        input.addEventListener('input', showColorCombinations);
 
         const deleteButton = document.createElement('button');
         deleteButton.classList.add("delete-button");
@@ -45,6 +45,7 @@ function addColorInput() {
         deleteButton.onclick = function() {
             inputWrapper.remove(); // Remove the entire wrapper div
             updateIds(); // Update IDs of all inputs and buttons after removal
+            showColorCombinations();
         };
 
         inputWrapper.appendChild(input);
@@ -53,6 +54,7 @@ function addColorInput() {
     } else {
         alert('Maximum of 20 colors reached');
     }
+    showColorCombinations();
 }
 
 function updateIds() {
@@ -70,19 +72,16 @@ function generateColorInputs(count) {
     for (let i = 0; i < count; i++) {
         addColorInput(); // Reuse the new function to add color inputs
     }
-    document.getElementById('showCombinations').style.display = 'block';
     document.getElementById('addColor').style.display = 'block'; // Show the Add Color button
+    document.getElementById('copyPalette').style.display = 'block'; // Show the Add Color button
+    showColorCombinations();
 }
 
-
-document.getElementById('showCombinations').addEventListener('click', function() {
+function showColorCombinations() {
     const colors = [];
     const inputs = document.querySelectorAll('#colorInputs input[type=color]');
     inputs.forEach(input => colors.push(input.value));
-    showColorCombinations(colors);
-});
 
-function showColorCombinations(colors) {
     const combinationsContainer = document.getElementById('combinationsContainer');
     combinationsContainer.innerHTML = ''; // Clear previous combinations
 
@@ -118,6 +117,18 @@ function showColorCombinations(colors) {
     });
 }
 
+document.getElementById('copyPalette').addEventListener('click', function() {
+    const colorInputs = document.querySelectorAll('#colorInputs input[type=color]');
+    const colorValues = Array.from(colorInputs).map(input => input.value);
+    const colorString = colorValues.join(' '); // Joins all colors into a single string separated by spaces
+
+    navigator.clipboard.writeText(colorString).then(() => {
+        alert('Palette copied to clipboard: ' + colorString);
+    }).catch(err => {
+        console.error('Failed to copy colors: ', err);
+        alert('Failed to copy palette.');
+    });
+});
 
 
 function getContrastRatio(color1, color2) {

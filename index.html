@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Colour Palette Test App</title>
@@ -11,19 +13,24 @@
 <body>
      <div class="app-container">
         <div class="header">
-            <h1>Color Palette Tester</h1>
+            <div class="logo-container">
+                <h1 class="logo">Color Palette Tester</h1>
+                <p class="slogan">Palette tester free and simple.</p>
+            </div>
             <div class="form-container">
                 <form id="colorForm">
-                    <label for="colorCount">Enter number of colors (2-20):</label>
-                    <input type="number" id="colorCount" min="2" max="20" required>
-                    <button type="submit">Generate Colours</button>
+                    <label for="colorCount">How many colours are in your palette?</label>
+                    <input type="number" id="colorCount" min="2" max="20" value=10 required>
+                    <button type="submit">Create Palette</button>
                 </form>
             </div>
         </div>
-        <div id="colorInputs"></div>
-        <div class="buttons-container">
-            <button id="addColor" style="display: none;">Add Color</button>
-            <button id="showCombinations" style="display: none;">Show Combinations</button>
+        <div class="color-container">
+            <div class="color-buttons">
+                <button id="addColor" style="display: none;">&#10133; Add Color</button>
+                <button id="copyPalette" style="display: none;">&#128203; Copy All</button>
+            </div>
+            <div id="colorInputs"></div>
         </div>
         <div id="combinationsContainer"></div>
     </div>

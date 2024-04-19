@@ -1,12 +1,11 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
     padding: 0;
     margin: 0;
     height: 100vh;
     font-family: "Lilita One", sans-serif;
     background-color: #e5e5f7;
-    background-image:  linear-gradient(135deg, #161515 25%, transparent 25%), linear-gradient(225deg, #161515 25%, transparent 25%), linear-gradient(45deg, #161515 25%, transparent 25%), linear-gradient(315deg, #161515 25%, #d2d2e3 25%);
-    background-position:  40px 0, 40px 0, 0 0, 0 0;
+    background-image: linear-gradient(135deg, #161515 25%, transparent 25%), linear-gradient(225deg, #161515 25%, transparent 25%), linear-gradient(45deg, #161515 25%, transparent 25%), linear-gradient(315deg, #161515 25%, #d2d2e3 25%);
+    background-position: 40px 0, 40px 0, 0 0, 0 0;
     background-size: 40px 40px;
     background-repeat: repeat;
 }
@@ -35,6 +34,9 @@ button {
 
 button {
     cursor: pointer;
+    width: 100%;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
     background-color: #161515;
     color: white;
     border: none;
@@ -50,33 +52,54 @@ input[type=color] {
     background-color: transparent;
     border: none;
     cursor: pointer;
-  }
-  input[type=color]::-webkit-color-swatch {
-    border-radius: 15px;
-    border: none;
-  }
-  input[type=color]::-moz-color-swatch {
-    border-radius: 15px;
-    border: none;
-  }
+}
 
-.header{
+input[type=color]::-webkit-color-swatch {
+    border-radius: 5px 5px 0 0;
+    border: none;
+}
+
+input[type=color]::-moz-color-swatch {
+    border-radius: 5px 5px 0 0;
+    border: none;
+}
+
+.header {
     display: flex;
 }
 
-.header h1{
-    font-size: 3rem;
+.header .logo-container{
+    margin: auto;
+    text-align: left;
 }
 
-.header .form-container{
+.header .logo {
+    font-size: 3rem;
+    margin: 0;
+    text-align: left;
+}
+
+.header .slogan{
+    margin: 0;
+}
+
+.header .form-container {
     margin: auto;
-    border-left: 3px #161515 dotted;
+    padding: 5px 30px;
+    border-radius: 20px;
+}
+
+.form-container form{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
 }
 
 #colorInputs {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
+    flex-wrap:wrap;
+    flex-grow: 1;
 }
 
 #colorInputs input[type="color"] {
@@ -84,7 +107,7 @@ input[type=color] {
     padding: 0;
 }
 
-#combinationsContainer{
+#combinationsContainer {
     overflow-y: scroll;
     max-height: 50vh;
     display: flex;
@@ -108,20 +131,24 @@ input[type=color] {
 }
 
 button.delete-button {
+    width: 46px;
     font-size: 8px;
-    margin: 0px auto 5px;
-    padding: 5px 10px;
-    background-color: #ff4d4d;
+    margin: -5px auto 5px;
+    padding: 5px 5px;
+    background-color: #e81139;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 0 0 5px 5px;
     cursor: pointer;
 }
 
-.buttons-container{
+.color-container{
     display: flex;
-    justify-content: center;
+    padding: 0 20px;
 }
-.buttons-container button{
-    width: 250px;   
+
+.color-buttons button{
+    display: block;
+    width: 100%;
+    margin: 10px auto ;
 }
