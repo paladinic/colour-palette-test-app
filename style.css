@@ -1,0 +1,127 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    font-family: "Lilita One", sans-serif;
+    background-color: #e5e5f7;
+    background-image:  linear-gradient(135deg, #161515 25%, transparent 25%), linear-gradient(225deg, #161515 25%, transparent 25%), linear-gradient(45deg, #161515 25%, transparent 25%), linear-gradient(315deg, #161515 25%, #d2d2e3 25%);
+    background-position:  40px 0, 40px 0, 0 0, 0 0;
+    background-size: 40px 40px;
+    background-repeat: repeat;
+}
+
+.app-container {
+    position: absolute;
+    display: block;
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-width: 75vw;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+input[type=number],
+button {
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    cursor: pointer;
+    background-color: #161515;
+    color: white;
+    border: none;
+    margin: 10px auto;
+}
+
+input[type=color] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  input[type=color]::-webkit-color-swatch {
+    border-radius: 15px;
+    border: none;
+  }
+  input[type=color]::-moz-color-swatch {
+    border-radius: 15px;
+    border: none;
+  }
+
+.header{
+    display: flex;
+}
+
+.header h1{
+    font-size: 3rem;
+}
+
+.header .form-container{
+    margin: auto;
+    border-left: 3px #161515 dotted;
+}
+
+#colorInputs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#colorInputs input[type="color"] {
+    margin: 5px auto 0;
+    padding: 0;
+}
+
+#combinationsContainer{
+    overflow-y: scroll;
+    max-height: 50vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.combination {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.color-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5px;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+button.delete-button {
+    font-size: 8px;
+    margin: 0px auto 5px;
+    padding: 5px 10px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.buttons-container{
+    display: flex;
+    justify-content: center;
+}
+.buttons-container button{
+    width: 250px;   
+}
