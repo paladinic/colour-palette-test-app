@@ -1,10 +1,9 @@
 // script.js
-document.getElementById('colorForm').addEventListener('submit', function(event) {
+document.getElementById('colorForm').addEventListener('submit', function (event) {
     event.preventDefault();
     const colorCount = document.getElementById('colorCount').value;
     generateColorInputs(colorCount);
 });
-
 function generateColorInputs(count) {
     const colorInputs = document.getElementById('colorInputs');
     colorInputs.innerHTML = ''; // Clear previous inputs
@@ -16,16 +15,14 @@ function generateColorInputs(count) {
         colorInputs.appendChild(input);
     }
 }
-
 function randomColor() {
     const randomHex = Math.floor(Math.random() * 16777215).toString(16);
     return '#' + randomHex.padStart(6, '0');
 }
 
-document.getElementById('addColor').addEventListener('click', function() {
+document.getElementById('addColor').addEventListener('click', function () {
     addColorInput();
 });
-
 function addColorInput() {
     const colorInputs = document.getElementById('colorInputs');
     const existingInputs = colorInputs.querySelectorAll('input[type=color]');
@@ -42,7 +39,7 @@ function addColorInput() {
         const deleteButton = document.createElement('button');
         deleteButton.classList.add("delete-button");
         deleteButton.textContent = 'Remove';
-        deleteButton.onclick = function() {
+        deleteButton.onclick = function () {
             inputWrapper.remove(); // Remove the entire wrapper div
             updateIds(); // Update IDs of all inputs and buttons after removal
             showColorCombinations();
@@ -56,15 +53,12 @@ function addColorInput() {
     }
     showColorCombinations();
 }
-
 function updateIds() {
     const colorInputs = document.querySelectorAll('.color-input-wrapper input[type=color]');
     colorInputs.forEach((input, index) => {
         input.id = 'color' + index; // Update the ID based on the current index
     });
 }
-
-
 
 function generateColorInputs(count) {
     const colorInputs = document.getElementById('colorInputs');
@@ -76,7 +70,6 @@ function generateColorInputs(count) {
     document.getElementById('copyPalette').style.display = 'block'; // Show the Add Color button
     showColorCombinations();
 }
-
 function showColorCombinations() {
     const colors = [];
     const inputs = document.querySelectorAll('#colorInputs input[type=color]');
@@ -94,17 +87,24 @@ function showColorCombinations() {
                 // Skip if background color and text color are the same
                 continue;
             }
-            const contrastRatio = getContrastRatio(colors[i], colors[j]);
+            const rgb1 = hexToRgb(colors[i]);
+            const rgb2 = hexToRgb(colors[j]);
+            const lum1 = calculateLuminance(rgb1);
+            const lum2 = calculateLuminance(rgb2);
+            const contrastRatio = calculateContrastRatio(lum1, lum2);
+            const colorDiff = calculateColorDifference(rgb1, rgb2);
+            const readabilityScore = calculateReadabilityScore(contrastRatio, colorDiff);
+            
             combinations.push({
                 backgroundColor: colors[i],
                 textColor: colors[j],
-                contrast: contrastRatio
+                readability: Math.round(readabilityScore/1.9,2)
             });
         }
     }
 
     // Sort combinations by contrast ratio in descending order
-    combinations.sort((a, b) => b.contrast - a.contrast);
+    combinations.sort((a, b) => b.readability - a.readability);
 
     // Create and append sorted combinations to the DOM
     combinations.forEach(combo => {
@@ -112,12 +112,13 @@ function showColorCombinations() {
         comboElement.className = 'combination';
         comboElement.style.backgroundColor = combo.backgroundColor;
         comboElement.style.color = combo.textColor;
-        comboElement.innerHTML = `Background: ${combo.backgroundColor} <br> Text: ${combo.textColor} <br> Contrast Ratio: ${combo.contrast}%`;
+        console.log(combo.readability);
+        comboElement.innerHTML = `Background: ${combo.backgroundColor} <br> Text: ${combo.textColor} <br> Readability: ${combo.readability}`;
         combinationsContainer.appendChild(comboElement);
     });
 }
 
-document.getElementById('copyPalette').addEventListener('click', function() {
+document.getElementById('copyPalette').addEventListener('click', function () {
     const colorInputs = document.querySelectorAll('#colorInputs input[type=color]');
     const colorValues = Array.from(colorInputs).map(input => input.value);
     const colorString = colorValues.join(' '); // Joins all colors into a single string separated by spaces
@@ -130,36 +131,53 @@ document.getElementById('copyPalette').addEventListener('click', function() {
     });
 });
 
-
-function getContrastRatio(color1, color2) {
-    const luminance1 = getLuminance(color1);
-    const luminance2 = getLuminance(color2);
-    const ratio = (Math.max(luminance1, luminance2) + 0.05) / (Math.min(luminance1, luminance2) + 0.05);
-    return Math.round(100*(ratio/21),0); // Keep two decimals for readability
-}
-
-function getLuminance(hex) {
-    const rgb = hexToRgb(hex);
-    const a = [rgb.r, rgb.g, rgb.b].map(function (v) {
-        v /= 255;
-        return v <= 0.03928 ? v / 12.92 : Math.pow(((v + 0.055) / 1.055), 2.4);
-    });
-    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
-}
-
 function hexToRgb(hex) {
     let r = 0, g = 0, b = 0;
-    // 3 digits
-    if (hex.length == 4) {
+    // handle shorthand (3 digit) hex code
+    if (hex.length === 4) {
         r = parseInt(hex[1] + hex[1], 16);
         g = parseInt(hex[2] + hex[2], 16);
         b = parseInt(hex[3] + hex[3], 16);
     }
-    // 6 digits
-    else if (hex.length == 7) {
+    // handle full (6 digit) hex code
+    else if (hex.length === 7) {
         r = parseInt(hex[1] + hex[2], 16);
         g = parseInt(hex[3] + hex[4], 16);
         b = parseInt(hex[5] + hex[6], 16);
     }
-    return {r, g, b};
+    return { r, g, b };
+}
+
+function calculateLuminance(rgb) {
+    // sRGB luminance calculation
+    const a = [rgb.r, rgb.g, rgb.b].map(v => {
+        v /= 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+}
+
+function calculateContrastRatio(lum1, lum2) {
+    const lumMax = Math.max(lum1, lum2);
+    const lumMin = Math.min(lum1, lum2);
+    return (lumMax + 0.05) / (lumMin + 0.05);
+}
+
+function calculateColorDifference(rgb1, rgb2) {
+    // Calculate Euclidean distance between two colors
+    const dr = rgb1.r - rgb2.r;
+    const dg = rgb1.g - rgb2.g;
+    const db = rgb1.b - rgb2.b;
+    return Math.sqrt(dr * dr + dg * dg + db * db);
+}
+
+function calculateReadabilityScore(contrastRatio, colorDiff) {
+    // Normalize color difference
+    const normalizedColorDiff = colorDiff / 441.6729559300637;  // Maximum color difference (black vs white in RGB space)
+    const contrastWeight = 0.9;
+    const colorDiffWeight = 0.1;
+
+    // Calculate the weighted score
+    const readabilityScore = (contrastRatio * contrastWeight) + (normalizedColorDiff * colorDiffWeight);
+    return readabilityScore;
 }
