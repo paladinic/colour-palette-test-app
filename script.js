@@ -112,7 +112,6 @@ function showColorCombinations() {
         comboElement.className = 'combination';
         comboElement.style.backgroundColor = combo.backgroundColor;
         comboElement.style.color = combo.textColor;
-        console.log(combo.readability);
         comboElement.innerHTML = `Background: ${combo.backgroundColor} <br> Text: ${combo.textColor} <br> Readability: ${combo.readability}`;
         combinationsContainer.appendChild(comboElement);
     });
